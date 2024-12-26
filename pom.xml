@@ -72,7 +72,6 @@
             <artifactId>helidon-microprofile-grpc-client</artifactId>
         </dependency>
 
-
     </dependencies>
 
     <build>
