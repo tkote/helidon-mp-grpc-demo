@@ -34,4 +34,5 @@ nb-configuration.xml
 .classpath
 .factorypath
 .vscode
+.idea
 
