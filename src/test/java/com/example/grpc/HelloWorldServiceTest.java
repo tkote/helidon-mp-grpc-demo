@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 class HelloWorldServiceTest {
 
     @Inject
-    private WebTarget webTarget;
+    private WebTarget webTarget; // webTarget はテストサーバに追随している
 
     @Inject
     @Grpc.GrpcProxy
@@ -34,6 +34,7 @@ class HelloWorldServiceTest {
 
     @BeforeEach
     void updatePort() {
+        // Inject された HelloWorldServiceClient のポート番号を変更
         if (client instanceof GrpcConfigurablePort c) {
             c.channelPort(webTarget.getUri().getPort());
         }
@@ -65,7 +66,8 @@ class HelloWorldServiceTest {
         request.onNext(HelloRequest.newBuilder().setName("Felix").build());
         request.onCompleted();
 
-        assertArrayEquals(new String[]{"Bob", "Simon", "Felix"}, observer.getMessages());
+        String[] messages = observer.getMessages();
+        assertArrayEquals(new String[]{"Bob", "Simon", "Felix"}, messages);
     }
 
     public class HelloReplyStreamObserver implements StreamObserver<HelloReply>{
