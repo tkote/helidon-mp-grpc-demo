@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.example.helidon</groupId>
     <artifactId>grpc-demo</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
 
     <dependencies>
