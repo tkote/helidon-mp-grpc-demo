@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 @ApplicationScoped
 public class HelloWorldResource {
 
-    private final Logger logger = Logger.getLogger(HelloWorldResource.class.getName());
+    private final Logger logger = Logger.getLogger(HelloWorldResource.class.getSimpleName());
 
     @Inject
     @Grpc.GrpcProxy

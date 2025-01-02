@@ -15,11 +15,11 @@ import io.grpc.examples.helloworld.HelloRequest;
 @ApplicationScoped
 public class HelloWorldService {
 
-    private final Logger logger = Logger.getLogger(HelloWorldService.class.getName());
+    private final Logger logger = Logger.getLogger(HelloWorldService.class.getSimpleName());
 
     @Grpc.Unary("SayHello")
     public HelloReply sayHello(HelloRequest request) {
-        logger.info("gRPC SayHello - name: " + request.getName());
+        logger.info("Unary was called - SayHello: " + request.getName());
         String reply = "Hello " + request.getName();
         return HelloReply.newBuilder().setMessage(reply).build();
     }
@@ -27,33 +27,35 @@ public class HelloWorldService {
     @Grpc.ServerStreaming("SayHelloStreamReply")
     public Stream<HelloReply> sayHelloStreamReply(HelloRequest request) {
         String name = request.getName();
-        logger.info("gRPC SayHelloStreamReply - name: " + name);
+        logger.info("ServerStreaming was called - SayHelloStreamReply: " + name);
         String[] parts = {"Hello", name};
         return Stream.of(parts).map(s -> HelloReply.newBuilder().setMessage(s).build());
     }
 
     @Grpc.Bidirectional("SayHelloBidiStream")
     public StreamObserver<HelloRequest> sayHelloBidiStream(StreamObserver<HelloReply> observer) {
-        logger.info("gRPC SayHelloBidiStream");
-        logger.info("StreamObserver: " + observer.getClass().getName());
+        logger.info("Bidirectional was called");
         return new HelloRequestStreamObserver(observer);
     }   
 
 
     public class HelloRequestStreamObserver implements StreamObserver<HelloRequest>{
 
-        private final Logger logger = Logger.getLogger(HelloRequestStreamObserver.class.getName());
+        private final Logger logger = Logger.getLogger(HelloRequestStreamObserver.class.getSimpleName());
 
         private StreamObserver<HelloReply> replyObserver;
 
         public HelloRequestStreamObserver(StreamObserver<HelloReply> replyObserver){
+            logger.info("Instantiated with StreamObserver<HelloReply>: " + replyObserver);
             this.replyObserver = replyObserver;
         }
 
         @Override
         public void onNext(HelloRequest value) {
             logger.info("onNext(): " + value.getName());
-            replyObserver.onNext(HelloReply.newBuilder().setMessage(value.getName()).build());
+            // 内容をそのまま返信
+            HelloReply reply = HelloReply.newBuilder().setMessage(value.getName()).build();
+            replyObserver.onNext(reply);
         }
 
         @Override

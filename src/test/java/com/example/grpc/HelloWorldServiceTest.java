@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 @HelidonTest
 class HelloWorldServiceTest {
 
+    private final Logger logger = Logger.getLogger(HelloWorldServiceTest.class.getSimpleName());
+
     @Inject
     private WebTarget webTarget; // webTarget はテストサーバに追随している
 
@@ -61,9 +63,11 @@ class HelloWorldServiceTest {
         
         StreamObserver<HelloRequest> request = client.sayHelloBidiStream(observer);
 
+        logger.info("Sending message: Bob, Simom and Felix");
         request.onNext(HelloRequest.newBuilder().setName("Bob").build());
         request.onNext(HelloRequest.newBuilder().setName("Simon").build());
         request.onNext(HelloRequest.newBuilder().setName("Felix").build());
+        logger.info("Sending onCompleted event");
         request.onCompleted();
 
         String[] messages = observer.getMessages();
@@ -72,7 +76,7 @@ class HelloWorldServiceTest {
 
     public class HelloReplyStreamObserver implements StreamObserver<HelloReply>{
 
-        private final Logger logger = Logger.getLogger(HelloReplyStreamObserver.class.getName());
+        private final Logger logger = Logger.getLogger(HelloReplyStreamObserver.class.getSimpleName());
 
         private ArrayList<String> messages = new ArrayList<String>();
 
@@ -106,7 +110,7 @@ class HelloWorldServiceTest {
                 try{
                     this.wait();
                 }catch(InterruptedException e){}
-                logger.info("received onCompleted()");
+                logger.info("waiting was lifted");
             }
         }
 
