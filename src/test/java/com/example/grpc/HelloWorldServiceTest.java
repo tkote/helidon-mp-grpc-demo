@@ -71,7 +71,7 @@ class HelloWorldServiceTest {
         request.onCompleted();
 
         String[] messages = observer.getMessages();
-        assertArrayEquals(new String[]{"Bob", "Simon", "Felix"}, messages);
+        assertArrayEquals(new String[]{"Hello Bob", "Hello Simon", "Hello Felix"}, messages);
     }
 
     public class HelloReplyStreamObserver implements StreamObserver<HelloReply>{

@@ -53,8 +53,8 @@ public class HelloWorldService {
         @Override
         public void onNext(HelloRequest value) {
             logger.info("onNext(): " + value.getName());
-            // 内容をそのまま返信
-            HelloReply reply = HelloReply.newBuilder().setMessage(value.getName()).build();
+            // Greeting にして返信
+            HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + value.getName()).build();
             replyObserver.onNext(reply);
         }
 
